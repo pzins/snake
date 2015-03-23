@@ -10,7 +10,7 @@
 
 #define WIDTH_SCREEN 640
 #define HEIGTH_SCREEN 640
-
+#define SPEED 30 //low is faster
 
 
 
@@ -27,9 +27,9 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 game->app.close();
-            if (event.type == sf::Event::KeyPressed)
+            if (event.type == sf::Event::KeyPressed && game->getState() == 0)
             {
-                /*
+                
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 {
                     if (game->getDirection() != 3)
@@ -51,21 +51,20 @@ int main()
                 {                    
                     if (game->getDirection() != 2)
                         game->setDirection(0);
-                }  */ 
+                }  
             }
         }
-        //if (time.getElapsedTime().asMilliseconds() >= 0.5)
-     //   {
-            game->ia();
+
+        if (!game->getState() && time.getElapsedTime().asMilliseconds() >= SPEED)
+        {
             time.restart();
-    
-            if (!game->getState()) game->run();
-            else if (game->getState() == 1) 
+            game->run();
+
+        }  
+        else if (game->getState())
+            if(game->getState() == 1) 
                 game->gameOver();
             else game->win();
-
-      //  }
-        
         game->drawMap();
         game->app.display();
         game->app.clear();
